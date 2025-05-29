@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Day</title>
+</head>
+
+<body>
+    <div style="width: 100vw; display: flex; justify-content: space-evenly; margin-top: 20px;">
+        <button onclick="startEventChain()" class="opening_ceremony">Opening Ceremony</button>
+    </div>
+</body>
+
+<script>
+    function AwardCeremony(score) {
+        console.log("Welcome to the Award Ceremony!")
+        console.log("Final Updated Scores!")
+
+        let first = ""
+        let second = ""
+        let third = ""
+
+        for (const [key, value] of Object.entries(score)) {
+            console.log(`${key}: ${value}`);
+        }
+
+        let finalPositions = Object.entries(score).sort((a, b) => a[1] - b[1])
+        finalPositions.map((item, index) => {
+            console.log(`${index} -> ${item}`)
+        })
+    }
+
+    function HighJump(AwardCeremony, score) {
+        console.log("High Jump event Started...!!!")
+        let winner = prompt("Enter the winner of High Jump")
+        let runnerup = prompt("Enter the runner up of High Jump")
+
+        if (winner && runnerup) {
+            score[winner] += 100;
+            score[runnerup] += 50;
+        } else {
+            console.log("Please enter winner and runnerup");
+            HighJump(AwardCeremony, score);
+        }
+        setTimeout(() => {
+            AwardCeremony(score);
+        }, 1000)
+    }
+
+    function LongJump(HighJump, score) {
+        console.log("Long Jump event Started...!!!");
+        let winner = Math.floor(Math.random() * 4);
+
+        let scoreKey = Object.keys(score);
+        console.log("Winner of Long Jump --- ", scoreKey[winner])
+
+        let winnerKey = scoreKey[winner]
+
+        score[winnerKey] += 100;
+        console.log("Updated Score round 2 -> ", score)
+
+        setTimeout(() => {
+            HighJump(AwardCeremony, score)
+        }, 1000)
+
+    }
+
+    function Race100M(LongJump, score) {
+        console.log("100M Race Started...!!!");
+        let timings = []
+        for (let i = 0; i < 4; i++) {
+            timings.push(Math.ceil(Math.random() * 20));
+        }
+
+        let raceScore = {
+            red: 0,
+            blue: 0,
+            green: 0,
+            black: 0,
+        }
+        Object.keys(raceScore).map((i, index) => {
+            raceScore[i] = timings[index]
+        })
+
+        let raceKeys = Object.entries(raceScore).sort((a, b) => a[1] - b[1])
+
+        let points = [100, 50, 20, 0]
+
+        raceKeys.map((i, index) => {
+            score[i[0]] = points[index];
+        })
+
+        console.log("Updated Score -> ", score)
+
+        setTimeout(() => {
+            LongJump(HighJump, score)
+        }, 2000)
+
+    }
+
+    function OpeningCeremony(Race100M) {
+        var score = {
+            red: 0,
+            blue: 0,
+            green: 0,
+            black: 0,
+        }
+        console.log("Sports Event Started...")
+        setTimeout(() => {
+            Race100M(LongJump, score);
+        }, 3000)
+    }
+
+    function startEventChain() {
+        OpeningCeremony(Race100M);
+    }
+
+</script>
+
+</html>
