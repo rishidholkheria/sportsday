@@ -23,8 +23,9 @@
         }
 
         let finalPositions = Object.entries(score).sort((a, b) => a[1] - b[1])
-        finalPositions.map((item, index) => {
-            console.log(`${index} -> ${item}`)
+        
+        finalPositions.reverse().map((item, index) => {
+            console.log(`${index+1} -> ${item}`)
         })
     }
 
